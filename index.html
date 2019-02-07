@@ -34,6 +34,11 @@
         </div> -->
         <div class="dev-tools">
             <p>dev tools</p>
+            <div>
+                <button @click="save()">存档</button>
+                <button @click="load()">读档</button>
+                <button @click="p(character.is_alive)">print</button>
+            </div>
             <div>受到<input type="number" v-model="devtools.atk">伤害
                 <button @click="character.be_atked(devtools.atk)">被攻击</button>
             </div>
@@ -42,6 +47,7 @@
             </div>
             <div><button @click="character.be_healed('full')">复活</button></div>
             <div>增加剩余点数<input type="number" v-model="devtools.ap"><button @click="character.ap += devtools.ap">增加</button></div>
+            <div><button @click="character.lv_up()">升级</button></div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

@@ -1,5 +1,5 @@
 'use strict'
-import * as job from './jobs.js'
+import * as jobs from './jobs.js'
 
 class Creature {
     constructor({
@@ -15,9 +15,11 @@ class Creature {
         this.def = def
         this.spd = spd
     }
+    get is_alive() {
+        return this.hp > 0
+    }
     be_atked(atk) {
         let dmg = atk - this.def
-        // console.log(`dmg: ${dmg}`)
         // 如果伤害值<=0则终止
         if (dmg <= 0) return 0
         // 如果伤害>=当前生命值，挂掉
@@ -39,6 +41,7 @@ class Character extends Creature {
         name,
         job_id,
         hp,
+        max_hp,
         atk,
         def,
         spd,
@@ -46,23 +49,28 @@ class Character extends Creature {
         dex,
         vit,
         int,
+        ap = 0,
+        lv = 1,
+        exp = 0,
     }, nickname) {
         super({
-            name,
             hp,
+            name,
             atk,
             def,
             spd
         })
+        this.max_hp = max_hp
         this.nickname = nickname
         this.job_id = job_id
         this.str = str
         this.dex = dex
         this.vit = vit
         this.int = int
-        this.ap = 0
-        this.lv = 1
-        this.exp = 0
+        this.ap = ap
+        this.lv = lv
+        this.exp = exp
+        this.calc('max_hp')
     }
     be_healed(nhp) {
         // 完全恢复
@@ -79,11 +87,39 @@ class Character extends Creature {
         }
     }
     add_ap(target) {
-        if (this.ap <=0 ) {
+        if (this.ap <= 0) {
             return false
         }
         this[target] += 1
         this.ap -= 1
+    }
+    lv_up() {
+        this.lv += 1
+        this.ap += jobs.grow[this.job_id].ap_per_lv
+        this.exp = 0
+        this.calc('max_hp')
+        this.be_healed('full')
+        // TODO: 升级多余的经验保留到下一级
+    }
+    calc(target) {
+        let init = jobs.init[this.job_id]
+        let grow = jobs.grow[this.job_id]
+        switch (target) {
+            case 'max_hp':
+                this.max_hp = init.hp + grow.hp_per_lv * (this.lv - 1) + grow.hp_per_vit * (this.vit - init.vit)
+                break
+            case 'atk':
+                this.atk = init.atk + grow.atk_per_int * (this.int - init.int)
+                break
+            case 'def':
+                this.def = init.def + grow.def_per_dex * (this.dex - init.dex)
+                break
+            case 'spd':
+                this.spd = init.spd + grow.spd_per_dex * (this.dex - init.dex)
+                break
+                // TODO: 不同角色不同成长
+                // TODO：装备影响
+        }
     }
 }
 

@@ -17,18 +17,18 @@ const init = {
     }
 }
 // 各职业属性成长
-const growth = {
+const grow = {
     '100': {
         ap_per_lv: 5,
         hp_per_lv: 10,
         hp_per_vit: 5,
         def_per_dex: 1,
         spd_per_dex: 0.1,
-        atk_per_int: 1,
+        atk_per_int: 2,
     }
 }
 
 export {
     init,
-    growth
+    grow
 }
