@@ -46,8 +46,7 @@ class Character extends Creature {
         dex,
         vit,
         int,
-        ap
-    }) {
+    }, nickname) {
         super({
             name,
             hp,
@@ -55,6 +54,7 @@ class Character extends Creature {
             def,
             spd
         })
+        this.nickname = nickname
         this.job_id = job_id
         this.str = str
         this.dex = dex

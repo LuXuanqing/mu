@@ -21,7 +21,7 @@ const app = new Vue({
         }
     },
     created() {
-        this.character = new Character(job.init['100'])
+        this.character = new Character(job.init['100'],'法爷大人')
     },
     watch: {
         'character.int': function () {

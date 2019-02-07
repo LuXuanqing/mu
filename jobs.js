@@ -2,6 +2,7 @@
 
 const init = {
     '100': {
+        job_id: 100,
         name: '魔法师',
         hp: 100,
         atk: 10,
@@ -27,4 +28,7 @@ const growth = {
     }
 }
 
-export {init, growth}
+export {
+    init,
+    growth
+}
