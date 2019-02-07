@@ -1,5 +1,8 @@
 'use strict'
-import { Character } from './creature.js'
+import {
+    Character
+} from './creature.js'
+import * as job from './jobs.js'
 
 const app = new Vue({
     el: '#app',
@@ -9,9 +12,21 @@ const app = new Vue({
         devtools: {
             atk: 40,
             heal: 50,
+            ap: 10,
         },
     },
-    created () {
-        this.character = new Character('老子是魔法师', 100, 20, 20)
+    methods: {
+        p(val) {
+            console.log(val)
+        }
+    },
+    created() {
+        this.character = new Character(job.init['100'])
+    },
+    watch: {
+        'character.int': function () {
+            this.character.atk = this.character.int
+        }
     }
+    
 })

@@ -6,3 +6,9 @@
 .border {
     border: 0.1rem solid black;
 }
+
+button {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.1rem;
+}
