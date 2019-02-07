@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Idle Mu</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="border character">
+            <div class="name">角色名：{{ character.name }}</div>
+            <div class="job">职业：{{ character.job }}</div>
+            <div class="level">等级：{{ character.level }}</div>
+            <div class="exp">经验值：{{ character.exp }}</div>
+            <div class="hp">HP: {{ character.hp }} / {{ character.max_hp }}</div>
+            <div class="hp">MP: {{ character.mp }} / {{ character.max_mp }}</div>
+            <div class="atk">攻击力：{{ character.atk }}</div>
+            <div class="def">防御力：{{ character.def }}</div>
+        </div>
+        <!-- <div class="monster border">
+            <div class="name">{{ monster.name }}</div>
+            <div class="hp">HP：HP: {{ monster.hp }} / {{ monster.max_hp }}</div>
+            <div class="atk">攻击力：{{ monster.atk }}</div>
+            <div class="def">防御力：{{ monster.def }}</div>
+        </div> -->
+        <div class="dev-tools">
+            <p>dev tools</p>
+            <div>受到<input type="number" v-model="devtools.atk">伤害
+                <button @click="character.be_attacked(devtools.atk)">被攻击</button>
+            </div>
+            <div>恢复<input type="number" v-model="devtools.heal">生命值
+                <button @click="character.be_healed(devtools.heal)">治疗</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="module" src="./creature.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
