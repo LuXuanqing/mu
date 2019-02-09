@@ -34,7 +34,7 @@ class Creature {
         } else if (rtn > 0) {
             console.log(`${this.name}对${target.name}造成了${rtn}伤害`)
         } else if (rtn == -1){
-            this.exp += target.exp
+            this.exp = parseInt(this.exp) + target.exp
             console.log(`${this.name}击杀了${target.name}，获得${target.exp}经验值`)
         }
     }
@@ -93,29 +93,30 @@ class Character extends Creature {
         this.lv = lv
     }
     be_healed(nhp) {
-        let hp_old = this.hp //记住治疗前的血量，用于计算治疗量
         if (nhp == 'full') { // 完全恢复
             this.hp = this.max_hp
         } else if (nhp > 0) { // 定额恢复
+            let hp_old = this.hp //记住治疗前的血量，用于计算治疗量
             this.hp += nhp
+            let hp_healed = this.hp - hp_old
+            console.log(`${this.name}恢复了${hp_healed}生命值`)
         }
-        let hp_healed = this.hp - hp_old
-        console.log(`${this.name}恢复了${hp_healed}生命值`)
     }
     add_ap(target) {
-        if (this.ap <= 0) {
-            return false
+        if (this.ap > 0) {
+            this[target] += 1
+            this.ap -= 1
         }
-        this[target] += 1
-        this.ap -= 1
+    }
+    get next_exp() {
+        return this.lv * 10
     }
     lv_up() {
+        this.exp -= this.next_exp
         this.lv += 1
         this.ap += jobs.grow[this.job_id].ap_per_lv
-        this.exp = 0
         this.calc('max_hp')
         this.be_healed('full')
-        // TODO: 升级多余的经验保留到下一级
     }
     calc(target) {
         let init = jobs.init[this.job_id]

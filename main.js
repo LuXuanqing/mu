@@ -1,6 +1,7 @@
 'use strict'
 import {
-    Character, Mob
+    Character,
+    Mob
 } from './creature.js'
 import * as jobs from './jobs.js'
 import * as mobs from './mobs.js'
@@ -46,6 +47,11 @@ const app = new Vue({
                 return false
             }
         },
+        spawn_character(job_id = 100, name = '测试号') {
+            let job_info = jobs.init[job_id]
+            job_info.name = name
+            this.character = new Character(job_info)
+        },
         p(val) {
             console.log(val)
         },
@@ -58,20 +64,18 @@ const app = new Vue({
     created() {
         // 读档失败则新建角色
         if (!this.load()) {
-            let job_info = jobs.init['100']
-            job_info.name = '法爷大人'
-            this.character = new Character(job_info)
+            spawn_character()
         }
         this.spawn_enemy(100)
     },
-    mounted () {
-        setInterval(() => this.save(),30000)
+    mounted() {
+        setInterval(() => this.save(), 30000)
     },
     watch: {
         'character.int': function () {
             this.character.calc('atk')
         },
-        'character.dex': function() {
+        'character.dex': function () {
             this.character.calc('def')
             this.character.calc('spd')
         },
@@ -84,14 +88,19 @@ const app = new Vue({
                 this.character.hp += delta
             }
         },
-        'mob.is_alive': function (val, oldVal) {
+        'mob.is_alive': function (val) {
             if (val == false) {
                 this.mob = null
                 if (this.devtools.is_auto_respawn) {
                     this.spawn_enemy(this.devtools.mob_id)
                 }
             }
+        },
+        'character.exp': function (val) {
+            if (val >= this.character.next_exp) {
+                this.character.lv_up()
+            }
         }
     }
-    
+
 })
