@@ -28,7 +28,7 @@
         <div class="mob border">
             <div>
                 mob id：<input type="number" v-model="devtools.mob_id">
-                <button @click="spawn_enemy(100)">spawn enemy</button>
+                <button @click="spawn_enemy(devtools.mob_id)">spawn enemy</button>
                 <input type="checkbox" id="is_auto_respawn" v-model="devtools.is_auto_respawn">
                 <label for="is_auto_respawn">自动重生</label>
             </div>
@@ -38,6 +38,8 @@
                     <button @click="character.dmg(mob)">打它</button>
                     <button @click="mob.dmg(character)">被它打</button>
                     <button @click="character.auto_dmg(mob)">自动攻击</button>
+                    <input type="checkbox" id="auto_dmg" v-model="character.is_auto_dmg">
+                    <label for="auto_dmg">自动攻击</label>
                 </div>
                 <div>HP: {{ mob.hp }}/{{ mob.max_hp }}</div>
                 <div>攻击力：{{ mob.atk }} 攻击速度：{{ mob.spd }}</div>

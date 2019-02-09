@@ -17,6 +17,9 @@ class Creature {
         this.def = def
         this.spd = spd
         this.exp = exp
+        this.is_auto_dmg = true
+        this.auto_dmg_id = null
+        
     }
     get hp() {
         return this._hp
@@ -47,9 +50,11 @@ class Creature {
         }
     }
     auto_dmg(target) {
-        if (this.dmg_interval) {
-            this.dmg(target)
-            let t = setTimeout(()=>{this.auto_dmg(target)}, this.dmg_interval)
+        if (this.dmg_interval) { // 如果没有攻击间隔就不自动攻击
+            if (this.is_auto_dmg) { //自动攻击开关
+                this.dmg(target)
+                this.auto_dmg_id = setTimeout(()=>{this.auto_dmg(target)}, this.dmg_interval)
+            } 
         }
     }
     be_dmged(atk) {
@@ -58,12 +63,12 @@ class Creature {
         if (dmg <= 0) return 0
         // 如果伤害>=当前生命值，挂掉
         if (dmg >= this.hp) {
-            console.log(`${this.name} 挂了`)
+            // console.log(`${this.name} 挂了`)
             this.hp = 0
             return -1
         } else {
             this.hp -= dmg
-            console.log(`${this.name} 受到了 ${dmg} 伤害`)
+            // console.log(`${this.name} 受到了 ${dmg} 伤害`)
             return dmg
         }
     }
