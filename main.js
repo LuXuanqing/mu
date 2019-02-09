@@ -27,7 +27,7 @@ const app = new Vue({
         load() {
             let data = localStorage.getItem('save0')
             if (data) {
-                this.character = JSON.parse(data)
+                this.character = new Character(JSON.parse(data))
                 console.info('读档成功')
             } else {
                 console.error('读档失败')
@@ -38,7 +38,9 @@ const app = new Vue({
         }
     },
     created() {
-        this.character = new Character(jobs.init['100'],'法爷大人')
+        let job_info = jobs.init['100']
+        job_info.name = '法爷大人'
+        this.character = new Character(job_info)
     },
     watch: {
         'character.int': function () {
@@ -53,9 +55,9 @@ const app = new Vue({
         },
         'character.max_hp': function (val, oldVal) {
             let delta = val - oldVal
-            console.log(delta)
+            console.log(val, oldVal)
             if (delta > 0) {
-                this.character.hp2 += delta
+                this.character.hp += delta
             }
         }
     }

@@ -10,7 +10,7 @@ class Creature {
         spd
     }) {
         this.name = name
-        this.hp = this.max_hp = hp
+        this._hp = this.max_hp = hp
         this.atk = atk
         this.def = def
         this.spd = spd
@@ -39,12 +39,11 @@ class Creature {
 class Character extends Creature {
     constructor({
         name,
-        job_id,
         hp,
-        max_hp,
         atk,
         def,
         spd,
+        job_id,
         str,
         dex,
         vit,
@@ -52,16 +51,16 @@ class Character extends Creature {
         ap = 0,
         lv = 1,
         exp = 0,
-    }, nickname) {
+        max_hp,
+    }) {
         super({
-            hp,
             name,
+            hp,
             atk,
             def,
             spd
         })
         this.max_hp = max_hp
-        this.nickname = nickname
         this.job_id = job_id
         this.str = str
         this.dex = dex
@@ -70,21 +69,22 @@ class Character extends Creature {
         this.ap = ap
         this.lv = lv
         this.exp = exp
-        this.calc('max_hp')
+    }
+    get hp() {
+        return this._hp
+    }
+    set hp(val) {
+        this._hp = Math.min(val, this.max_hp)
     }
     be_healed(nhp) {
-        // 完全恢复
-        if (nhp == 'full') {
+        let hp_old = this.hp //记住治疗前的血量，用于计算治疗量
+        if (nhp == 'full') { // 完全恢复
             this.hp = this.max_hp
-            return false
-        }
-        if (this.hp + nhp > this.max_hp) {
-            console.log(`${this.name} 恢复了 ${this.max_hp - this.hp} 生命值`)
-            this.hp = this.max_hp
-        } else {
+        }else if (nhp > 0) { // 定额恢复
             this.hp += nhp
-            console.log(`${this.name} 恢复了 ${nhp} 生命值`)
         }
+        let hp_healed = this.hp - hp_old
+        console.log(`${this.name}恢复了${hp_healed}生命值`)
     }
     add_ap(target) {
         if (this.ap <= 0) {
