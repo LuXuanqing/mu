@@ -5,20 +5,40 @@ class Creature {
     constructor({
         name,
         hp,
+        _hp,
         atk,
         def,
-        spd
+        spd,
+        exp
     }) {
         this.name = name
-        this._hp = this.max_hp = hp
+        this._hp = this.max_hp = _hp || hp
         this.atk = atk
         this.def = def
         this.spd = spd
+        this.exp = exp
+    }
+    get hp() {
+        return this._hp
+    }
+    set hp(val) {
+        this._hp = Math.min(val, this.max_hp)
     }
     get is_alive() {
         return this.hp > 0
     }
-    be_atked(atk) {
+    dmg(target) {
+        let rtn = target.be_dmged(this.atk)
+        if (rtn == 0) {
+            console.log(`${target.name}完美防御了${this.name}的攻击`)
+        } else if (rtn > 0) {
+            console.log(`${this.name}对${target.name}造成了${rtn}伤害`)
+        } else if (rtn == -1){
+            this.exp += target.exp
+            console.log(`${this.name}击杀了${target.name}，获得${target.exp}经验值`)
+        }
+    }
+    be_dmged(atk) {
         let dmg = atk - this.def
         // 如果伤害值<=0则终止
         if (dmg <= 0) return 0
@@ -40,6 +60,7 @@ class Character extends Creature {
     constructor({
         name,
         hp,
+        _hp,
         atk,
         def,
         spd,
@@ -56,9 +77,11 @@ class Character extends Creature {
         super({
             name,
             hp,
+            _hp,
             atk,
             def,
-            spd
+            spd,
+            exp
         })
         this.max_hp = max_hp
         this.job_id = job_id
@@ -68,19 +91,12 @@ class Character extends Creature {
         this.int = int
         this.ap = ap
         this.lv = lv
-        this.exp = exp
-    }
-    get hp() {
-        return this._hp
-    }
-    set hp(val) {
-        this._hp = Math.min(val, this.max_hp)
     }
     be_healed(nhp) {
         let hp_old = this.hp //记住治疗前的血量，用于计算治疗量
         if (nhp == 'full') { // 完全恢复
             this.hp = this.max_hp
-        }else if (nhp > 0) { // 定额恢复
+        } else if (nhp > 0) { // 定额恢复
             this.hp += nhp
         }
         let hp_healed = this.hp - hp_old
@@ -123,6 +139,29 @@ class Character extends Creature {
     }
 }
 
+class Mob extends Creature {
+    constructor({
+        mob_id,
+        name,
+        hp,
+        atk,
+        def,
+        spd,
+        exp
+    }) {
+        super({
+            name,
+            hp,
+            atk,
+            def,
+            spd,
+            exp
+        })
+        this.mob_id = mob_id
+    }
+}
+
 export {
-    Character
+    Character,
+    Mob
 }
