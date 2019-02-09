@@ -29,6 +29,8 @@
             <div>
                 mob id：<input type="number" v-model="devtools.mob_id">
                 <button @click="spawn_enemy(100)">spawn enemy</button>
+                <input type="checkbox" id="is_auto_respawn" v-model="devtools.is_auto_respawn">
+                <label for="is_auto_respawn">自动重生</label>
             </div>
             <div v-if="this.mob">
                 <div>

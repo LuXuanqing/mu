@@ -15,13 +15,14 @@ const app = new Vue({
             heal: 50,
             ap: 10,
             mob_id: 100,
+            is_auto_respawn: true,
         },
     },
     methods: {
         save() {
             let data = this.character
             if (!data) {
-                console.log('data doesnt exist')
+                console.error('save data doesnt exist')
                 return false
             }
             localStorage.setItem('save0', JSON.stringify(data))
@@ -51,7 +52,8 @@ const app = new Vue({
         spawn_enemy(mob_id) {
             let mob_info = mobs.init[mob_id]
             this.mob = new Mob(mob_info)
-        }
+            console.info(`野生的${this.mob.name}出现了`)
+        },
     },
     created() {
         // 读档失败则新建角色
@@ -84,7 +86,10 @@ const app = new Vue({
         },
         'mob.is_alive': function (val, oldVal) {
             if (val == false) {
-                delete this.mob
+                this.mob = null
+                if (this.devtools.is_auto_respawn) {
+                    this.spawn_enemy(this.devtools.mob_id)
+                }
             }
         }
     }
