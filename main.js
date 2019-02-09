@@ -62,6 +62,9 @@ const app = new Vue({
         }
         this.spawn_enemy(100)
     },
+    mounted () {
+        setInterval(() => this.save(),30000)
+    },
     watch: {
         'character.int': function () {
             this.character.calc('atk')
