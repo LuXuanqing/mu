@@ -27,15 +27,29 @@ class Creature {
     get is_alive() {
         return this.hp > 0
     }
+    get dmg_interval() {
+        // 如果攻击速度=0，不能自动攻击
+        if (this.spd > 0) {
+            return 20*1000 / this.spd
+        } else {
+            return false
+        }
+    }
     dmg(target) {
         let rtn = target.be_dmged(this.atk)
         if (rtn == 0) {
             console.log(`${target.name}完美防御了${this.name}的攻击`)
         } else if (rtn > 0) {
             console.log(`${this.name}对${target.name}造成了${rtn}伤害`)
-        } else if (rtn == -1){
+        } else if (rtn == -1) {
             this.exp = parseInt(this.exp) + target.exp
             console.log(`${this.name}击杀了${target.name}，获得${target.exp}经验值`)
+        }
+    }
+    auto_dmg(target) {
+        if (this.dmg_interval) {
+            this.dmg(target)
+            let t = setTimeout(()=>{this.auto_dmg(target)}, this.dmg_interval)
         }
     }
     be_dmged(atk) {

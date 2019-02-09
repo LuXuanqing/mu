@@ -37,6 +37,7 @@
                     怪物名：{{ mob.name }}
                     <button @click="character.dmg(mob)">打它</button>
                     <button @click="mob.dmg(character)">被它打</button>
+                    <button @click="character.auto_dmg(mob)">自动攻击</button>
                 </div>
                 <div>HP: {{ mob.hp }}/{{ mob.max_hp }}</div>
                 <div>攻击力：{{ mob.atk }} 攻击速度：{{ mob.spd }}</div>

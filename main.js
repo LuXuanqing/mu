@@ -15,7 +15,7 @@ const app = new Vue({
             atk: 40,
             heal: 50,
             ap: 10,
-            mob_id: 100,
+            mob_id: 90000,
             is_auto_respawn: true,
         },
     },
@@ -53,7 +53,7 @@ const app = new Vue({
             this.character = new Character(job_info)
         },
         p(val) {
-            console.log(val)
+            console.log(this.character.dmg_interval)
         },
         spawn_enemy(mob_id) {
             let mob_info = mobs.init[mob_id]
@@ -66,7 +66,7 @@ const app = new Vue({
         if (!this.load()) {
             spawn_character()
         }
-        this.spawn_enemy(100)
+        this.spawn_enemy(this.devtools.mob_id)
     },
     mounted() {
         setInterval(() => this.save(), 30000)
