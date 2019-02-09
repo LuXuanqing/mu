@@ -12,7 +12,7 @@
 
 <body>
     <div id="app">
-        <div class="border character">
+        <div class="border" id="character">
             <div>角色名：{{ character.name }} 职业：{{ character.job_id }}</div>
             <div>等级：{{ character.lv }} 经验值：<input type="number" v-model="character.exp">/{{ character.next_exp }}</div>
             <div class="hp">HP: {{ character.hp }} / {{ character.max_hp }}</div>

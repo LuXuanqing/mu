@@ -49,7 +49,9 @@ class Creature {
             console.log(`${this.name}击杀了${target.name}，获得${target.exp}经验值`)
         }
     }
-    auto_dmg(target) {
+    auto_dmg() {
+        // 这块写的有问题，目标死亡后，不会变更为新目标
+        let target = null
         if (this.dmg_interval) { // 如果没有攻击间隔就不自动攻击
             if (this.is_auto_dmg) { //自动攻击开关
                 this.dmg(target)
