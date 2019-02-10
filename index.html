@@ -7,71 +7,50 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Idle Mu</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
-    <div id="app">
-        <div class="border" id="character">
-            <div>角色名：{{ character.name }} 职业：{{ character.job_id }}</div>
-            <div>等级：{{ character.lv }} 经验值：<input type="number" v-model="character.exp">/{{ character.next_exp }}</div>
-            <div class="hp">HP: {{ character.hp }} / {{ character.max_hp }}</div>
-            <div class="atk">攻击力：{{ character.atk }} 攻击速度： {{ character.spd }}</div>
-            <div class="def">防御力：{{ character.def }}</div>
-            <div>力量：{{ character.str }}<button v-if="character.ap" @click="character.add_ap('str')">+</button></div>
-            <div>敏捷：{{ character.dex }}<button v-if="character.ap" @click="character.add_ap('dex')">+</button></div>
-            <div>体力：{{ character.vit }}<button v-if="character.ap" @click="character.add_ap('vit')">+</button></div>
-            <div>智力：{{ character.int }}<button v-if="character.ap" @click="character.add_ap('int')">+</button></div>
-            <div>剩余点数：{{ character.ap }}</div>
-
-        </div>
-        <div class="mob border">
-            <div>
-                mob id：<input type="number" v-model="devtools.mob_id">
-                <button @click="spawn_enemy(devtools.mob_id)">spawn enemy</button>
-                <input type="checkbox" id="is_auto_respawn" v-model="devtools.is_auto_respawn">
-                <label for="is_auto_respawn">自动重生</label>
-            </div>
-            <div v-if="this.mob">
-                <div>
-                    怪物名：{{ mob.name }}
-                    <button @click="character.dmg(mob)">打它</button>
-                    <button @click="mob.dmg(character)">被它打</button>
-                    <button @click="character.auto_dmg(mob)">自动攻击</button>
-                    <input type="checkbox" id="auto_dmg" v-model="character.is_auto_dmg">
-                    <label for="auto_dmg">自动攻击</label>
-                </div>
-                <div>HP: {{ mob.hp }}/{{ mob.max_hp }}</div>
-                <div>攻击力：{{ mob.atk }} 攻击速度：{{ mob.spd }}</div>
-                <div>防御力：{{ mob.def }}</div>
-
+    <div id="charael" class="border">
+        <div>角色名：{{name}} 职业：{{job}}</div>
+        <div>等级：{{lv}} 经验值：{{exp}}/{{next_exp}}</div>
+        <div>HP：{{hp}}/{{max_hp}}</div>
+        <div>攻击力：{{atk}} 攻速：{{spd}} 防御力：{{def}}</div>
+        <div>力量：{{str}} <button v-if="ap>0" @click="add_ap('str',1)">+1</button></div>
+        <div>敏捷：{{dex}} <button v-if="ap>0" @click="add_ap('dex',1)">+1</button></div>
+        <div>体力：{{vit}} <button v-if="ap>0" @click="add_ap('vit',1)">+1</button></div>
+        <div>智力：{{int}} <button v-if="ap>0" @click="add_ap('int',1)">+1</button></div>
+        <div>剩余点数：{{ap}}</div>
+        <div class="tools border">
+            <p>character devtools</p>
+            <div><button @click="lv_up">升一级</button></div>
+            <div><button @click="heal('full')">满血</button></div>
+            <div class="save">
+                <button @click="save()">保存角色</button>
+                <button @click="load()">读取角色</button>
             </div>
         </div>
-        <div class="dev-tools">
-            <p>dev tools</p>
-            <div>
-                <button @click="save()">存档</button>
-                <button @click="load()">读档</button>
-                <button @click="p(character.is_alive)">print</button>
-                <button @click="spawn_character()">初始化存档</button>
-            </div>
-            <div>受到<input type="number" v-model="devtools.atk">伤害
-                <button @click="character.be_dmged(devtools.atk)">被攻击</button>
-            </div>
-            <div>恢复<input type="number" v-model="devtools.heal">生命值
-                <button @click="character.be_healed(devtools.heal)">治疗</button>
-            </div>
-            <div><button @click="character.be_healed('full')">复活</button></div>
-            <div>增加剩余点数<input type="number" v-model="devtools.ap"><button @click="character.ap += devtools.ap">增加</button></div>
-            <div><button @click="character.lv_up()">升级</button></div>
+    </div>
+    <div id="mobel" class="border">
+        <div>角色名：{{name}} 经验值：{{exp}}</div>
+        <div>HP：{{hp}}/{{max_hp}}</div>
+        <div>攻击力：{{atk}} 攻速：{{spd}} 防御力：{{def}}</div>
+        <div class="tools border">
+            <p>mob devtools</p>
+            <div><button @click="spawn(tools.mob_id)">生成怪物</button> <input type="number" v-model="tools.mob_id"></div>
+        </div>
+    </div>
+    <div id="appel" class="tools border">
+        <p>system devtools</p>
+        <div>
+            <button @click="dmg(chara, mob)">人打怪</button>
+            <button @click="dmg(mob, chara)">怪打人</button>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script type="module" src="./creature.js"></script>
-    <script type="module" src="./jobs.js"></script>
-    <script type="module" src="./mobs.js"></script>
-
-    <script type="module" src="./main.js"></script>
+    <script src="./creature.js"></script>
+    <script src="./character.js"></script>
+    <script src="./mob.js"></script>
+    <script src="./main.js"></script>
 </body>
 
 </html>
