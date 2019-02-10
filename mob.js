@@ -51,6 +51,7 @@ const mob = new Vue({
         exp: null,
         tools: {
             mob_id: 100,
+            mob_init: mob_init,
         }
     },
     methods: {
