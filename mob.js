@@ -23,7 +23,7 @@ const mob_init = {
         name: '雪人王',
         max_hp: 400,
         atk: 60,
-        def: 80,
+        def: 60,
         spd: 10,
         exp: 100,
     },
@@ -33,7 +33,7 @@ const mob_init = {
         max_hp: 50000000,
         atk: 0,
         def: 0,
-        spd: 10,
+        spd: 1,
         exp: 0,
     }
 }
@@ -69,13 +69,15 @@ const mob = new Vue({
     computed: {
         is_alive() {
             return this.hp > 0
-        }
+        },
+        cd: creature.cd,
+
     },
     watch: {
         is_alive(val) {
             if (val === false) {
                 chara.exp += this.exp
-                this.spawn(this.tools.mob_id)
+                this.spawn(this.mob_id)
             }
         }
     },

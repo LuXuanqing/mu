@@ -126,7 +126,8 @@
          max_hp() {
              return job_init[this.job_id].max_hp + job_grow[this.job_id].hp_per_lv * (this.lv - 1) +
                  job_grow[this.job_id].hp_per_vit * (this.vit - job_init[this.job_id].vit)
-         }
+         },
+         cd: creature.cd,
      },
      watch: {
         exp: function (val, val_old) {

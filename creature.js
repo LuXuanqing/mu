@@ -26,7 +26,7 @@ const creature = {
             console.log(`${this.name}击杀了${tgt.name}，获得${tgt.exp}经验值`)
         }
     },
-    test() {
-        console.log(this)
+    cd() {
+        return 20 / this.spd * 1000
     }
 }

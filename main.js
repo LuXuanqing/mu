@@ -4,6 +4,7 @@ const vm = new Vue({
     data: {
         chara: chara,
         mob: mob,
+        is_auto_battle: true,
     },
     methods: {
         dmg(atker, defer) {
@@ -24,6 +25,17 @@ const vm = new Vue({
                 console.log(`${atker.name}击杀了${defer.name}`)
             }
         },
-
+        auto_battle() {
+            let loop_dmg = (atker, defer) => {
+                if (this.is_auto_battle) {
+                    this.dmg(atker, defer)
+                    setTimeout(() => {
+                        loop_dmg(atker, defer)
+                    }, atker.cd);
+                }
+            }
+            loop_dmg(this.chara, this.mob)
+            loop_dmg(this.mob, this.chara)
+        }
     }
 })
